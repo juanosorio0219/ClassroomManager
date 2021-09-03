@@ -3,22 +3,30 @@ package ui;
 import java.io.File;
 import java.io.IOException;
 
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
+import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.image.ImageView;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.DatePicker;
+import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.RadioButton;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import model.Classroom;
+import model.UserAccount;
 
 public class ClassroomGUI {
 	
@@ -54,19 +62,43 @@ public class ClassroomGUI {
     private RadioButton btnOther;
 
     @FXML
-    private CheckBox btnSoftware;
+    private CheckBox btnSoftware = new CheckBox("Sotfware Engineering");
 
     @FXML
-    private CheckBox btnTelematic;
+    private CheckBox btnTelematic = new CheckBox("Telematic Engineering");
 
     @FXML
-    private CheckBox btnIndustrial;
+    private CheckBox btnIndustrial = new CheckBox("Industrial Engineering");
 
     @FXML
     private DatePicker btnBirthday;   
 
     @FXML
     private ComboBox<String> btnFavBrowser;
+    
+    @FXML
+    private Label user;
+
+    @FXML
+    private ImageView profilePhoto;
+
+    @FXML
+    private TableView<UserAccount> accountsTable;
+
+    @FXML
+    private TableColumn<UserAccount, String> colUser;
+
+    @FXML
+    private TableColumn<UserAccount, String> colGender;
+
+    @FXML
+    private TableColumn<UserAccount, String> colCareer;
+
+    @FXML
+    private TableColumn<UserAccount, String> colBirthday;
+
+    @FXML
+    private TableColumn<UserAccount, String> colBrowser;
     
     public void logIn() throws IOException {
 		 FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("login.fxml"));
@@ -134,8 +166,18 @@ public class ClassroomGUI {
 
     
     @FXML
-    public void verifyCredentials(ActionEvent event) {
-
+    public void verifyCredentials(ActionEvent event) throws IOException {
+    	if(classroom.verifyCredentials(logUser.getText(), logPassword.getText())) {
+			loadList();
+		}
+		else {
+			Alert alert = new Alert(AlertType.INFORMATION);
+    		alert.setTitle("Alert");
+    		alert.setHeaderText("Error");
+    		alert.setContentText("Username or password incorrect");
+    		alert.showAndWait();
+		}
+		 	
     }
     
     @FXML
@@ -181,15 +223,19 @@ public class ClassroomGUI {
 		 if(btnTelematic.isSelected()) {
 			 career+=btnTelematic.getText()+"\n";
 		 }
-		 if(btnSoftware.isSelected()) {
+		 if(btnIndustrial.isSelected()) {
 			 career+=btnIndustrial.getText()+"\n";
 		 }
 		 classroom.createAccount(txtUserName.getText().trim(), txtPassword.getText().trim(), txtPhoto.getText(), gender, 
 					career, btnBirthday.getValue(), btnFavBrowser.getValue());
-			
-		
 		 
-		 logIn();
+		 Alert alert = new Alert(AlertType.INFORMATION);
+ 		alert.setTitle("Alert");
+ 		alert.setHeaderText("Good!");
+ 		alert.setContentText("Your account has been created");
+ 		alert.showAndWait();	
+				 
+		logIn();
 			
 			
 			
@@ -205,15 +251,36 @@ public class ClassroomGUI {
 
     }
     
-   
-   
+    @FXML
+    public void logOut(ActionEvent event) throws IOException {
+		
+    	logIn();
+		 
+    }
     
-    
-      
-
-
-	private void loadList() {
-		// TODO Auto-generated method stub
+	private void loadList() throws IOException {
+		FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("contact-list.fxml"));
+		fxmlLoader.setController(this);
+		Parent root = fxmlLoader.load();
+		mainPane.getChildren().clear();
+		mainPane.setCenter(root);
+		primaryStage.close();
+		primaryStage.show();
+		initializedTable();
+		
+	}
+	
+	public void initializedTable() {
+		ObservableList<UserAccount> observableList;
+    	observableList = FXCollections.observableArrayList(classroom.getUsers());    	
+		accountsTable.setItems(observableList);
+		colUser.setCellValueFactory(new PropertyValueFactory<UserAccount,String>("username")); 
+		colGender.setCellValueFactory(new PropertyValueFactory<UserAccount,String>("gender"));
+		colCareer.setCellValueFactory(new PropertyValueFactory<UserAccount,String>("career")); 
+		colBirthday.setCellValueFactory(new PropertyValueFactory<UserAccount,String>("birthday"));
+		colBrowser.setCellValueFactory(new PropertyValueFactory<UserAccount,String>("favBrowser"));
+		
+		
 		
 	}
 

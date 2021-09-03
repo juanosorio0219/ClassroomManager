@@ -8,18 +8,18 @@ public class UserAccount {
 	private String password;
 	private String photo;
 	private String gender;
-	private String carreer;
+	private String career;
 	private LocalDate birthday;
 	private String favBrowser;
 	
-	public UserAccount(String username, String password, String photo, String gender, String carreer,
+	public UserAccount(String username, String password, String photo, String gender, String career,
 			LocalDate birthday, String favBrowser) {
 		
 		this.username = username;
 		this.password = password;
 		this.photo = photo;
 		this.gender = gender;
-		this.carreer = carreer;
+		this.career = career;
 		this.birthday = birthday;
 		this.favBrowser = favBrowser;
 		
@@ -57,12 +57,12 @@ public class UserAccount {
 		this.gender = gender;
 	}
 
-	public String getCarreer() {
-		return carreer;
+	public String getCareer() {
+		return career;
 	}
 
-	public void setCarreer(String carreer) {
-		this.carreer = carreer;
+	public void setCarreer(String career) {
+		this.career = career;
 	}
 
 	public LocalDate getBirthday() {
