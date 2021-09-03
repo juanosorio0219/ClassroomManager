@@ -81,6 +81,10 @@ public class UserAccount {
 		this.favBrowser = favBrowser;
 	}
 	
+	public boolean verifyPassword(String pass) {
+		return pass.equals(password);
+	}
+	
 	
 
 }

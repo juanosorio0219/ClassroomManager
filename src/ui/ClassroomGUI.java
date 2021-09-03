@@ -7,6 +7,8 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.DatePicker;
@@ -94,29 +96,7 @@ public class ClassroomGUI {
 			 "Opera",
 			 "Thor"
 		 );		
-	 }
-    
-    @FXML
-    public void verifyCredentials(ActionEvent event) {
-
-    }
-    
-    @FXML
-    public void browsePhoto(ActionEvent event) {
-    	FileChooser fileChooser = new FileChooser();
-		fileChooser.setTitle("Open Resource File");
-		fileChooser.getExtensionFilters().addAll(new FileChooser.ExtensionFilter("JPG", "*.jpg"), new FileChooser.ExtensionFilter("PNG", "*.png"));
-		File file = fileChooser.showOpenDialog(primaryStage);
-		if (file != null) {
-			txtPhoto.setText(file.getAbsolutePath());
-		}
-
-    }
-
-    @FXML
-    public void loadLogIn(ActionEvent event) {
-
-    }
+	}
     
     @FXML
     public void selectMale(ActionEvent event) {
@@ -139,11 +119,95 @@ public class ClassroomGUI {
 		btnMale.setSelected(false);
 
     }
-
+    
     @FXML
-    public void verifyInformation(ActionEvent event) {
+    public void browsePhoto(ActionEvent event) {
+    	FileChooser fileChooser = new FileChooser();
+		fileChooser.setTitle("Open Resource File");
+		fileChooser.getExtensionFilters().addAll(new FileChooser.ExtensionFilter("JPG", "*.jpg"), new FileChooser.ExtensionFilter("PNG", "*.png"));
+		File file = fileChooser.showOpenDialog(primaryStage);
+		if (file != null) {
+			txtPhoto.setText(file.getAbsolutePath());
+		}
 
     }
+
+    
+    @FXML
+    public void verifyCredentials(ActionEvent event) {
+
+    }
+    
+    @FXML
+    public void verifyInformation(ActionEvent event) throws IOException {    	
+    	if((!btnFemale.isSelected()&&!btnMale.isSelected()&&!btnOther.isSelected()) || 
+				 ((!btnSoftware.isSelected())&&(!btnTelematic.isSelected())&&(!btnIndustrial.isSelected())||
+				 txtUserName.getText().trim().equals("") || txtPassword.getText().trim().equals("") || 
+				 txtPhoto.getText().trim().equals("") || btnBirthday.getValue()==null || btnFavBrowser.getValue()==null)){
+    		Alert alert = new Alert(AlertType.INFORMATION);
+    		alert.setTitle("Alert");
+    		alert.setHeaderText("Error");
+    		alert.setContentText("You must fill each field in the form");
+    		alert.showAndWait();
+    				
+				
+			} else if(classroom.verifyUsername(txtUserName.getText())){
+				Alert alert = new Alert(AlertType.INFORMATION);
+	    		alert.setTitle("Alert");
+	    		alert.setHeaderText("Error");
+	    		alert.setContentText("This username already exist");
+	    		alert.showAndWait();
+			} else {
+				createAccount();
+			}
+
+	    }
+
+    
+    private void createAccount() throws IOException {
+		 String gender = "";
+		 if(btnFemale.isSelected()) {
+			 gender = "Female";
+		 } else if(btnMale.isSelected()) {
+			 gender = "Male";
+		 } else if(btnOther.isSelected()) {
+			 gender = "Other";
+		 }
+		 
+		 String career = "";
+		 if(btnSoftware.isSelected()) {
+			 career+=btnSoftware.getText()+"\n";
+		 }
+		 if(btnTelematic.isSelected()) {
+			 career+=btnTelematic.getText()+"\n";
+		 }
+		 if(btnSoftware.isSelected()) {
+			 career+=btnIndustrial.getText()+"\n";
+		 }
+		 classroom.createAccount(txtUserName.getText().trim(), txtPassword.getText().trim(), txtPhoto.getText(), gender, 
+					career, btnBirthday.getValue(), btnFavBrowser.getValue());
+			
+		
+		 
+		 logIn();
+			
+			
+			
+	}
+    
+   
+    
+   
+
+    @FXML
+    public void loadLogIn(ActionEvent event) throws IOException {
+    	logIn();
+
+    }
+    
+   
+   
+    
     
       
 
