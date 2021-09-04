@@ -12,6 +12,7 @@ import javafx.scene.Parent;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.ComboBox;
@@ -280,7 +281,11 @@ public class ClassroomGUI {
 		colBirthday.setCellValueFactory(new PropertyValueFactory<UserAccount,String>("birthday"));
 		colBrowser.setCellValueFactory(new PropertyValueFactory<UserAccount,String>("favBrowser"));
 		user.setText(classroom.getActiveUser().getUsername());
+		File file = new File(classroom.getActiveUser().getPhoto());
+		Image image = new Image(file.toURI().toString());
+		profilePhoto.setImage(image);
 		
+	
 		
 		
 		

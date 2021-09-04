@@ -45,17 +45,7 @@ public class Classroom {
 		
 		return credentials;
 	}
-	public String searchPhoto(String username) {
-		String photo = "";
-		for(int i=0; i<accounts.size(); i++) {
-			if((username.equals(accounts.get(i).getUsername()))){
-				photo = accounts.get(i).getPhoto();
-			}
-		}
-		return photo;
 		
-	}
-	
 	public UserAccount getActiveUser() {
 		return activeUser;
 	}
