@@ -38,8 +38,9 @@ public class Classroom {
 				credentials = accounts.get(i).verifyPassword(password);
 				if(credentials) {
 					activeUser = accounts.get(i);
+					exists = true;
 				}
-				exists = true;
+				
 			}
 		}
 		
