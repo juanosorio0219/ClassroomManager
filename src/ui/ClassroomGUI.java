@@ -77,7 +77,7 @@ public class ClassroomGUI {
     private ComboBox<String> btnFavBrowser;
     
     @FXML
-    private Label user;
+    private Label user = new Label("");
 
     @FXML
     private ImageView profilePhoto;
@@ -168,7 +168,7 @@ public class ClassroomGUI {
     @FXML
     public void verifyCredentials(ActionEvent event) throws IOException {
     	if(classroom.verifyCredentials(logUser.getText(), logPassword.getText())) {
-			loadList();
+    		loadList();
 		}
 		else {
 			Alert alert = new Alert(AlertType.INFORMATION);
@@ -279,6 +279,8 @@ public class ClassroomGUI {
 		colCareer.setCellValueFactory(new PropertyValueFactory<UserAccount,String>("career")); 
 		colBirthday.setCellValueFactory(new PropertyValueFactory<UserAccount,String>("birthday"));
 		colBrowser.setCellValueFactory(new PropertyValueFactory<UserAccount,String>("favBrowser"));
+		user.setText(classroom.getActiveUser().getUsername());
+		
 		
 		
 		
